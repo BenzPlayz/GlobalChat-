@@ -1,0 +1,31 @@
+package me.benzplayz;
+
+import java.io.UnsupportedEncodingException;
+import lilypad.client.connect.api.event.EventListener;
+import lilypad.client.connect.api.event.MessageEvent;
+import org.bukkit.Bukkit;
+
+public class LilyListener
+{
+  @EventListener
+  public void onMessage(MessageEvent event)
+  {
+    String[] data = null;
+    if (!event.getChannel().equalsIgnoreCase(CrossServerChat.channel)) {
+      return;
+    }
+    try
+    {
+      data = event.getMessageAsString().split(CrossServerChat.split);
+    }
+    catch (UnsupportedEncodingException e)
+    {
+      e.printStackTrace();
+    }
+    if (data[2].equalsIgnoreCase(CrossServerChat.username)) {
+      return;
+    }
+    Bukkit.broadcastMessage(
+      CrossServerChat.format.replace("{player}", data[0]).replace("{message}", data[1]));
+  }
+}
